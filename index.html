@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lecture Viewer</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .chapter { margin-top: 20px; }
+    .lecture { padding: 10px; border: 1px solid #ccc; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+<h1>My Course Website</h1>
+<div id="app"></div>
+
+<script>
+fetch('data.php')
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById('app');
+
+    data.teachers.forEach(teacher => {
+      const tDiv = document.createElement('div');
+      tDiv.innerHTML = `<h2>${teacher.teacher}</h2><img src="${teacher.image}" width="150" />`;
+      container.appendChild(tDiv);
+
+      teacher.chapters.forEach(chap => {
+        const cDiv = document.createElement('div');
+        cDiv.className = 'chapter';
+        cDiv.innerHTML = `<h3>${chap.chapter_name}</h3>`;
+        container.appendChild(cDiv);
+
+        chap.lectures.forEach(lec => {
+          const lDiv = document.createElement('div');
+          lDiv.className = 'lecture';
+          lDiv.innerHTML = `
+            <strong>${lec.title}</strong><br>
+            <a href="stream.php?id=${lec.video_id}" target="_blank">🎬 Watch Video</a><br>
+            <a href="stream.php?id=${lec.notes_id}" target="_blank">📄 View Notes</a>
+          `;
+          cDiv.appendChild(lDiv);
+        });
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
