@@ -1,4 +1,4 @@
-generate_php = """<?php
+<?php
 function generate_id($text) {
   return substr(md5($text), 0, 10);
 }
@@ -46,7 +46,7 @@ for ($i = 0; $i < count($lines); $i++) {
   } elseif (strpos($line, '#Chapter:') === 0) {
     flush_chapter($teachers, $current_teacher, $current_chapter, $current_lectures);
     $current_chapter = trim(str_replace('#Chapter:', '', $line));
-  } elseif (preg_match('/^[A-Za-z].*\\|.*$/', $line)) {
+  } elseif (preg_match('/^[A-Za-z].*\|.*$/', $line)) {
     $title = $line;
     $video_url = isset($lines[$i+1]) ? trim($lines[$i+1]) : "";
     $notes_url = isset($lines[$i+2]) ? trim($lines[$i+2]) : "";
@@ -79,16 +79,10 @@ if ($current_teacher) {
 }
 
 // Write data.php
-file_put_contents("data.php", "<?php\\nheader('Content-Type: application/json');\\necho json_encode(" . var_export(["teachers" => $teachers], true) . ", JSON_PRETTY_PRINT);\\n?>");
+file_put_contents("data.php", "<?php\nheader('Content-Type: application/json');\necho json_encode(" . var_export(["teachers" => $teachers], true) . ", JSON_PRETTY_PRINT);\n?>");
 
 // Write id_map.php
-file_put_contents("id_map.php", "<?php\\n\\n\$id_map = " . var_export($id_map, true) . ";\\n?>");
+file_put_contents("id_map.php", "<?php\n\n\$id_map = " . var_export($id_map, true) . ";\n?>");
 
 echo "✅ data.php and id_map.php generated from main.txt";
-?>"""
-
-# Save this as generate.php
-with open("/mnt/data/generate.php", "w", encoding="utf-8") as f:
-    f.write(generate_php)
-
-"/mnt/data/generate.php created successfully."
+?>
